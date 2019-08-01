@@ -7,6 +7,10 @@ import (
 )
 
 func NewArrayList() List {
+	return newArrayList()
+}
+
+func newArrayList() *arrayList {
 	return &arrayList{
 		array: make([]interface{}, 0, arrayListDefaultCapacity),
 		size:  0,
@@ -35,6 +39,13 @@ func (l *arrayList) Remove(item interface{}) error {
 	index := l.IndexOf(item)
 	if index < 0 {
 		return errors.New("item not found")
+	}
+	return l.RemoveIndex(index)
+}
+
+func (l *arrayList) RemoveIndex(index int64) error {
+	if err := l.checkIndex(index); err != nil {
+		return err
 	}
 	l.array = append(l.array[:index], l.array[index+1:]...)
 	l.ensureCapacity(l.size - 1)

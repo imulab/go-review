@@ -1,5 +1,7 @@
 package collection
 
+import "github.com/imulab/go-review/object"
+
 type Collection interface {
 	// Add an item to a collection. Returns non-nil error if item cannot be added.
 	Add(item interface{}) error
@@ -72,5 +74,22 @@ type Stack interface {
 	Size() int64
 
 	// Check if stack is empty.
+	IsEmpty() bool
+}
+
+type PriorityQueue interface {
+	// Add an item to the priority queue with priority information
+	EnqueueWithPriority(item interface{}, priority object.Comparable)
+
+	// Add a comparable item to the priority queue, the item itself will be used for priority comparison
+	Enqueue(item object.Comparable)
+
+	// Remove the highest priority item from the queue
+	Dequeue() interface{}
+
+	// Size of the priority queue
+	Size() int64
+
+	// Check if the priority queue is empty
 	IsEmpty() bool
 }
