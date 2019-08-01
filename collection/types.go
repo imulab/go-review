@@ -60,3 +60,17 @@ type Queue interface {
 	// Check if queue is empty.
 	IsEmpty() bool
 }
+
+type Stack interface {
+	// Push an item onto stack
+	Push(item interface{})
+
+	// Pop an item off stack. If stack is empty, returns nil
+	Pop() interface{}
+
+	// Size of the stack
+	Size() int64
+
+	// Check if stack is empty.
+	IsEmpty() bool
+}

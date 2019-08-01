@@ -41,14 +41,11 @@ func (l *linkedList) Add(item interface{}) error {
 }
 
 func (l *linkedList) RemoveIndex(index int64) error {
-	if err := l.checkIndex(index); err != nil {
+	node, err := l.getNodeAtIndex(index)
+	if err != nil {
 		return err
 	}
-	cursor := l.head
-	for i := int64(0); i < index - 1; i++ {
-		cursor = cursor.next
-	}
-	l.remove(cursor)
+	l.remove(node)
 	return nil
 }
 
@@ -109,6 +106,26 @@ func (l *linkedList) getNode(item interface{}) (*listNode, int64) {
 	return nil, -1
 }
 
+func (l *linkedList) getNodeAtIndex(index int64) (*listNode, error) {
+	if err := l.checkIndex(index); err != nil {
+		return nil, err
+	}
+
+	if index < l.size / 2 {
+		cursor := l.head
+		for i := int64(0); i < index; i++ {
+			cursor = cursor.next
+		}
+		return cursor, nil
+	} else {
+		cursor := l.tail
+		for i := l.size - 1; i > index; i-- {
+			cursor = cursor.prev
+		}
+		return cursor, nil
+	}
+}
+
 func (l *linkedList) Clear() {
 	l.size = 0
 	l.head = nil
@@ -126,29 +143,19 @@ func (l *linkedList) ToArray() []interface{} {
 }
 
 func (l *linkedList) Get(index int64) (interface{}, error) {
-	if err := l.checkIndex(index); err != nil {
+	node, err := l.getNodeAtIndex(index)
+	if err != nil {
 		return nil, err
 	}
-
-	cursor := l.head
-	for i := int64(0); i < index; i++ {
-		cursor = cursor.next
-	}
-
-	return cursor.val, nil
+	return node.val, nil
 }
 
 func (l *linkedList) Set(index int64, item interface{}) error {
-	if err := l.checkIndex(index); err != nil {
+	node, err := l.getNodeAtIndex(index)
+	if err != nil {
 		return err
 	}
-
-	cursor := l.head
-	for i := int64(0); i < index; i++ {
-		cursor = cursor.next
-	}
-	cursor.val = item
-
+	node.val = item
 	return nil
 }
 
