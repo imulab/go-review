@@ -45,3 +45,18 @@ type Set interface {
 	// inherits all method from collection
 	Collection
 }
+
+// A FIFO queue
+type Queue interface {
+	// Add an item to queue
+	Enqueue(item interface{})
+
+	// Remove an item from the queue. If queue is empty, returns nil
+	Dequeue() interface{}
+
+	// Size of the queue
+	Size() int64
+
+	// Check if queue is empty.
+	IsEmpty() bool
+}

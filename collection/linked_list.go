@@ -40,30 +40,48 @@ func (l *linkedList) Add(item interface{}) error {
 	return nil
 }
 
+func (l *linkedList) RemoveIndex(index int64) error {
+	if err := l.checkIndex(index); err != nil {
+		return err
+	}
+	cursor := l.head
+	for i := int64(0); i < index - 1; i++ {
+		cursor = cursor.next
+	}
+	l.remove(cursor)
+	return nil
+}
+
 func (l *linkedList) Remove(item interface{}) error {
 	cursor, _ := l.getNode(item)
 	if cursor == nil {
 		return errors.New("item not found")
 	}
+	l.remove(cursor)
+	return nil
+}
 
-	if cursor.prev == nil {
-		l.head = cursor.next
-	} else {
-		cursor.prev.next = cursor.next
+func (l *linkedList) remove(node *listNode) {
+	if node == nil {
+		return
 	}
 
-	if cursor.next == nil {
-		l.tail = cursor.prev
+	if node.prev == nil {
+		l.head = node.next
 	} else {
-		cursor.next.prev = cursor.prev
+		node.prev.next = node.next
 	}
 
-	cursor.next = nil
-	cursor.prev = nil
+	if node.next == nil {
+		l.tail = node.prev
+	} else {
+		node.next.prev = node.prev
+	}
+
+	node.next = nil
+	node.prev = nil
 
 	l.size--
-
-	return nil
 }
 
 func (l *linkedList) Size() int64 {
