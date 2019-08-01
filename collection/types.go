@@ -77,6 +77,25 @@ type Stack interface {
 	IsEmpty() bool
 }
 
+type Table interface {
+	// Put a value corresponding to a key into the table. If the key exists, value
+	// will be overwritten
+	Put(key object.Comparable, value interface{})
+
+	// Get the value corresponding to a key from the table. If the key does not exist,
+	// nil is returned
+	Get(key object.Comparable) interface{}
+
+	// Delete the key from table
+	Del(key object.Comparable)
+
+	// Size of the table
+	Size() int64
+
+	// Check if table is empty.
+	IsEmpty() bool
+}
+
 type PriorityQueue interface {
 	// Add an item to the priority queue with priority information
 	EnqueueWithPriority(item interface{}, priority object.Comparable)
